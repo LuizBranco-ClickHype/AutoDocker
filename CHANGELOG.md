@@ -5,6 +5,29 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-04-30
+
+### Removido
+- Modo avançado de instalação - agora há apenas um modo padrão de instalação
+- Sistema de monitoramento com Prometheus e Grafana
+- Configurações avançadas de segurança nos cabeçalhos HTTP
+- Rate limiting e middlewares avançados do Traefik
+- Opções condicionais de instalação
+
+### Adicionado
+- Monitoramento de disponibilidade do Portainer após a instalação
+- Função para verificar quando o serviço Portainer está pronto
+
+### Alterado
+- Backup e sistema de verificação de integridade agora são instalados por padrão
+- Simplificação da configuração do Traefik
+- Uniformização dos nomes de volumes para evitar inconsistências
+
+### Melhorado
+- Clareza do código com remoção de trechos condicionais
+- Documentação atualizada para refletir a nova abordagem simplificada
+- Performance do script com remoção de componentes não essenciais
+
 ## [1.1.2] - 2025-04-26
 
 ### Adicionado
