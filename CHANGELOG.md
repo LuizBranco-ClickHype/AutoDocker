@@ -5,6 +5,19 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [1.1.1] - 2025-04-26
+
+### Adicionado
+- Ferramenta de diagnóstico de conectividade (`--diagnostico`)
+- Opção para desativar todos os firewalls para testes (`--no-firewall`)
+- Verificação e configuração automática de firewall do sistema
+- Mensagens de ajuda específicas para configuração de firewall em diferentes provedores VPS
+
+### Melhorado
+- Exposição de portas na configuração do Traefik para melhor compatibilidade
+- Instruções para diagnóstico de problemas de conexão
+- Feedback mais detalhado sobre configurações de rede
+
 ## [1.1.0] - 2025-04-25
 
 ### Alterado

@@ -17,13 +17,15 @@ Este é um script de autoinstalação que configura automaticamente um ambiente 
 - **Verificação de integridade** automática do sistema
 - **Sistema de logs centralizado** para melhor diagnóstico
 - **Rate limiting** para proteção contra ataques
+- **Diagnóstico automático** de problemas de conectividade
+- **Configuração inteligente de firewall** para abrir portas necessárias
 
 ## 📋 Pré-requisitos
 
 - Um servidor Linux (testado em Ubuntu e Debian)
 - Acesso root ao servidor
 - Um domínio apontando para o IP do servidor
-- Portas 80 e 443 liberadas no firewall
+- Portas 80 e 443 liberadas no firewall (configuração automática no sistema, mas verifique seu provedor VPS)
 
 ## 💻 Como usar
 
@@ -38,13 +40,33 @@ chmod +x auto_instalador.sh
 sudo ./auto_instalador.sh
 ```
 
+### Opções adicionais
+
+```bash
+# Para diagnóstico de problemas de conectividade
+sudo ./auto_instalador.sh --diagnostico
+
+# Para desativar todos os firewalls (somente para testes)
+sudo ./auto_instalador.sh --no-firewall
+```
+
+## 🔍 Solução de problemas
+
+Se você não conseguir acessar as aplicações após a instalação:
+
+1. Verifique se o serviço está rodando: `docker service ls`
+2. Verifique se o domínio está apontando para o IP correto do servidor
+3. **Verifique o firewall do seu provedor VPS** - muitos provedores como AWS, DigitalOcean, Linode, etc. têm firewalls adicionais que precisam ser configurados manualmente no painel de controle
+4. Execute o diagnóstico: `sudo ./auto_instalador.sh --diagnostico`
+
 ## 🔄 Controle de versão
 
 Este projeto usa versionamento semântico para garantir que você sempre possa reverter para uma versão estável anterior se necessário. Veja o [CHANGELOG](CHANGELOG.md) para detalhes sobre cada versão.
 
 ### Versões disponíveis:
 
-- [v1.1.0](./versoes/v1.1.0/) - Versão atual com apenas modo avançado
+- [v1.1.1](./versoes/v1.1.1/) - Versão atual com diagnóstico de conectividade e gestão de firewall
+- [v1.1.0](./versoes/v1.1.0/) - Versão com apenas modo avançado
 - [v1.0.0](./versoes/v1.0.0/) - Versão com interface visual e opção de modo avançado
 - [v0.1.0](./versoes/v0.1.0/) - Versão inicial básica
 
