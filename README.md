@@ -11,13 +11,15 @@ Este é um script de autoinstalação que configura automaticamente um ambiente 
 
 - **Instalação automatizada** de Docker Swarm, Traefik e Portainer
 - **Interface visual** com banners ASCII Art para melhor experiência
-- **Monitoramento avançado** com Prometheus e Grafana
+- **Monitoramento avançado** com Prometheus e Grafana via Portainer
 - **Sistema de backup automático** para volumes críticos
 - **Segurança aprimorada** com cabeçalhos HTTP de segurança e TLS 1.2+
 - **Verificação de integridade** automática do sistema
 - **Sistema de logs centralizado** para melhor diagnóstico
 - **Rate limiting** para proteção contra ataques
 - **Configuração automática de firewall** para abrir portas necessárias
+- **Instalação robusta** que continua mesmo com problemas de firewall
+- **Integração com Portainer** para gerenciamento das stacks de monitoramento
 
 ## 📋 Pré-requisitos
 
@@ -45,8 +47,8 @@ Este projeto usa versionamento semântico para garantir que você sempre possa r
 
 ### Versões disponíveis:
 
-- [v1.1.2](./versoes/v1.1.2/) - Versão atual com configuração simplificada
-- [v1.1.1](./versoes/v1.1.1/) - Versão com diagnóstico de conectividade e gestão de firewall
+- [v1.1.2](./versoes/v1.1.2/) - Versão atual com integração Portainer e instalação robusta
+- [v1.1.1](./versoes/v1.1.1/) - Versão com diagnóstico de conectividade
 - [v1.1.0](./versoes/v1.1.0/) - Versão com apenas modo avançado
 - [v1.0.0](./versoes/v1.0.0/) - Versão com interface visual e opção de modo avançado
 - [v0.1.0](./versoes/v0.1.0/) - Versão inicial básica
@@ -55,9 +57,8 @@ Este projeto usa versionamento semântico para garantir que você sempre possa r
 
 Este script configura automaticamente HTTPS para suas aplicações usando Let's Encrypt, mas você deve:
 
-1. Configurar um firewall para proteger seu servidor
-2. Alterar senhas padrão imediatamente após a instalação
-3. Considerar implementar autenticação adicional para o Traefik Dashboard
+1. Alterar senhas padrão imediatamente após a instalação
+2. Verificar regularmente por atualizações de segurança
 
 ## 🤝 Contribuindo
 

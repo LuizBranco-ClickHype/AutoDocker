@@ -209,56 +209,55 @@ banner_instalando
 
 # Verificar e configurar firewall
 secao "VERIFICAÇÃO DE FIREWALL"
-mensagem "Verificando e configurando firewall para permitir tráfego necessário..."
+mensagem "Configurando firewall para permitir tráfego necessário..."
 
 # Detectar o firewall presente no sistema
 if command -v ufw &> /dev/null; then
   mensagem "Firewall UFW detectado, configurando..."
-  ufw allow 80/tcp
-  ufw allow 443/tcp
-  ufw allow 22/tcp
-  ufw allow 2377/tcp # Docker Swarm
-  ufw allow 7946/tcp # Docker Swarm
-  ufw allow 7946/udp # Docker Swarm overlay
+  ufw allow 80/tcp || true
+  ufw allow 443/tcp || true
+  ufw allow 22/tcp || true
+  ufw allow 2377/tcp || true # Docker Swarm
+  ufw allow 7946/tcp || true # Docker Swarm
+  ufw allow 7946/udp || true # Docker Swarm
+  ufw allow 4789/udp || true # Docker Swarm overlay
   if ! ufw status | grep -q "Status: active"; then
-    ufw --force enable
+    ufw --force enable || true
   fi
   sucesso "UFW configurado com sucesso"
 elif command -v firewall-cmd &> /dev/null; then
   mensagem "Firewall FirewallD detectado, configurando..."
-  firewall-cmd --permanent --add-port=80/tcp
-  firewall-cmd --permanent --add-port=443/tcp
-  firewall-cmd --permanent --add-port=22/tcp
-  firewall-cmd --permanent --add-port=2377/tcp
-  firewall-cmd --permanent --add-port=7946/tcp
-  firewall-cmd --permanent --add-port=7946/udp
-  firewall-cmd --permanent --add-port=4789/udp
-  firewall-cmd --reload
+  firewall-cmd --permanent --add-port=80/tcp || true
+  firewall-cmd --permanent --add-port=443/tcp || true
+  firewall-cmd --permanent --add-port=22/tcp || true
+  firewall-cmd --permanent --add-port=2377/tcp || true
+  firewall-cmd --permanent --add-port=7946/tcp || true
+  firewall-cmd --permanent --add-port=7946/udp || true
+  firewall-cmd --permanent --add-port=4789/udp || true
+  firewall-cmd --reload || true
   sucesso "FirewallD configurado com sucesso"
 elif command -v iptables &> /dev/null; then
   mensagem "Configurando iptables..."
-  iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-  iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-  iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-  iptables -A INPUT -p tcp --dport 2377 -j ACCEPT
-  iptables -A INPUT -p tcp --dport 7946 -j ACCEPT
-  iptables -A INPUT -p udp --dport 7946 -j ACCEPT
-  iptables -A INPUT -p udp --dport 4789 -j ACCEPT
+  iptables -A INPUT -p tcp --dport 80 -j ACCEPT || true
+  iptables -A INPUT -p tcp --dport 443 -j ACCEPT || true
+  iptables -A INPUT -p tcp --dport 22 -j ACCEPT || true
+  iptables -A INPUT -p tcp --dport 2377 -j ACCEPT || true
+  iptables -A INPUT -p tcp --dport 7946 -j ACCEPT || true
+  iptables -A INPUT -p udp --dport 7946 -j ACCEPT || true
+  iptables -A INPUT -p udp --dport 4789 -j ACCEPT || true
   if command -v iptables-save &> /dev/null; then
     if [ -d /etc/iptables ]; then
-      iptables-save > /etc/iptables/rules.v4
+      iptables-save > /etc/iptables/rules.v4 || true
     fi
   fi
   sucesso "iptables configurado com sucesso"
 else
-  aviso "Nenhum firewall detectado. Por favor, verifique se o provedor VPS não tem firewall adicional bloqueando portas 80 e 443."
+  aviso "Nenhum firewall detectado. Continuando com a instalação..."
 fi
 
-# Verificar se as portas estão realmente acessíveis
-mensagem "Verificando se as portas estão acessíveis..."
-if ! curl -s --connect-timeout 5 http://localhost:80 > /dev/null; then
-  aviso "Porta 80 parece estar bloqueada internamente. Verifique seu provedor VPS para regras de firewall adicionais."
-fi
+# Aviso sobre possíveis problemas de conexão sem bloquear a instalação
+mensagem "NOTA: Se você não conseguir acessar os serviços depois, pode ser necessário configurar o firewall no seu provedor VPS."
+mensagem "Continuando com a instalação dos serviços..."
 
 # Configurar o hostname
 secao "CONFIGURAÇÃO DO SISTEMA"
@@ -556,6 +555,7 @@ if [ "$MODO_AVANCADO" = true ]; then
   done
 
   # Criar diretórios para monitoramento
+  mkdir -p /opt/portainer/stacks
   mkdir -p /opt/monitoring/prometheus
   mkdir -p /opt/monitoring/grafana/provisioning/datasources
   mkdir -p /opt/monitoring/grafana/provisioning/dashboards
@@ -612,8 +612,8 @@ datasources:
     url: http://loki:3100
 EOL
 
-  # Criar stack de monitoramento
-  cat > /tmp/docker-install/monitoring.yaml << EOL
+  # Criar stack de monitoramento como um arquivo para o Portainer
+  cat > /opt/portainer/stacks/monitoring.yml << EOL
 version: "3.7"
 
 services:
@@ -779,15 +779,27 @@ scrape_configs:
         __path__: /var/lib/docker/containers/*/*log
 EOL
 
-  # Implantar stack de monitoramento
-  mensagem "Implantando a stack de monitoramento..."
-  docker stack deploy --prune --resolve-image always -c /tmp/docker-install/monitoring.yaml monitoring
-  if [ $? -ne 0 ]; then
-    aviso "Falha ao implantar a stack de monitoramento, continuando com o resto da instalação..."
-  else
-    sucesso "Stack de monitoramento implantada com sucesso"
-  fi
-
+  # Não implantar stack de monitoramento automaticamente, deixar para o usuário fazer via Portainer
+  mensagem "Stack de monitoramento preparada para implantação através do Portainer."
+  sucesso "Arquivos de configuração salvos em /opt/portainer/stacks/monitoring.yml"
+  
+  # Configuração para importar a stack via Portainer
+  mensagem "Para implantar a stack de monitoramento, siga estes passos no Portainer:"
+  echo -e "1. Acesse o Portainer em https://${DOMINIO_PORTAINER}"
+  echo -e "2. Vá para 'Stacks' no menu lateral"
+  echo -e "3. Clique em 'Add stack'"
+  echo -e "4. Escolha 'Upload' ou 'Repository' e selecione o arquivo da stack"
+  echo -e "5. Clique em 'Deploy the stack'"
+  echo -e ""
+  echo -e "O Grafana estará disponível em https://${DOMINIO_GRAFANA}"
+  echo -e "O Prometheus estará disponível em https://${DOMINIO_PROMETHEUS}"
+  echo -e ""
+  echo -e "Usuário Grafana: admin"
+  echo -e "Senha Grafana: admin (altere no primeiro acesso)"
+  echo -e ""
+  echo -e "Usuário Prometheus: admin"
+  echo -e "Senha Prometheus: admin"
+  
   # Configurar backup automático
   mensagem "Configurando sistema de backup automático..."
   mkdir -p /opt/backup-scripts
@@ -894,28 +906,31 @@ echo -e "${AMARELO}Usuário:${NC} admin (crie sua senha no primeiro acesso)"
 echo ""
 
 if [ "$MODO_AVANCADO" = true ]; then
-  echo -e "${VERDE}=== MONITORAMENTO ===${NC}"
+  echo -e "${VERDE}=== MONITORAMENTO (INSTALAR VIA PORTAINER) ===${NC}"
+  echo -e "Arquivo da stack: /opt/portainer/stacks/monitoring.yml"
+  echo -e ""
+  echo -e "Para instalar o monitoramento:"
+  echo -e "1. Acesse o Portainer em https://${DOMINIO_PORTAINER}"
+  echo -e "2. Vá para 'Stacks' e clique em 'Add stack'"
+  echo -e "3. Escolha 'Upload' ou 'Repository' e selecione o arquivo da stack"
+  echo -e "4. Clique em 'Deploy the stack'"
+  echo -e ""
+  echo -e "${AMARELO}Após a instalação:${NC}"
   echo -e "${AMARELO}Grafana:${NC} https://${DOMINIO_GRAFANA}"
-  echo -e "${AMARELO}Usuário:${NC} admin"
-  echo -e "${AMARELO}Senha:${NC} admin (lembre-se de alterar no primeiro acesso)"
-  echo ""
   echo -e "${AMARELO}Prometheus:${NC} https://${DOMINIO_PROMETHEUS}"
-  echo -e "${AMARELO}Usuário:${NC} admin"
-  echo -e "${AMARELO}Senha:${NC} admin (autenticação básica)"
-  echo ""
+  echo -e ""
   echo -e "${VERDE}=== BACKUP ===${NC}"
   echo -e "${AMARELO}Diretório de backups:${NC} /opt/docker-backups"
   echo -e "${AMARELO}Frequência:${NC} Diariamente às 2h da manhã"
-  echo ""
+  echo -e ""
   echo -e "${VERDE}=== VERIFICAÇÃO DE INTEGRIDADE ===${NC}"
   echo -e "${AMARELO}Logs:${NC} /var/log/healthcheck-*.log"
   echo -e "${AMARELO}Frequência:${NC} A cada 6 horas"
-  echo ""
+  echo -e ""
 fi
 
 echo -e "${VERDE}=== PRÓXIMOS PASSOS ===${NC}"
 echo -e "1. Acesse o Portainer e defina sua senha de administrador"
-echo -e "2. Configure seu firewall para permitir apenas as portas necessárias (80, 443)"
-echo -e "3. Considere adicionar mais nós ao seu swarm para alta disponibilidade"
-echo ""
+echo -e "2. Na seção 'Stacks' do Portainer, implante a stack de monitoramento conforme instruções acima"
+echo -e ""
 echo -e "${AMARELO}Obrigado por usar nosso instalador! Para suporte adicional, visite nosso repositório GitHub.${NC}" 

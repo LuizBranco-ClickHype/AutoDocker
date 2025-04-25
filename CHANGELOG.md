@@ -7,15 +7,22 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [1.1.2] - 2025-04-26
 
+### Adicionado
+- Integração de Grafana e Prometheus com o Portainer para gerenciamento simplificado
+- Opções para continuar instalação mesmo com falhas na configuração de firewall
+- Arquivos de stack salvos em /opt/portainer/stacks para uso com Portainer
+
 ### Removido
-- Referências à configuração de firewall em provedores VPS
 - Funcionalidades de diagnóstico de conectividade (--diagnostico)
 - Opção para desativar firewalls (--no-firewall)
 - Mensagens específicas sobre solução de problemas
+- Instalação automática da stack de monitoramento (agora gerenciada pelo Portainer)
 
-### Simplificado
+### Melhorado
+- Robustez do script para funcionar mesmo com problemas de firewall
 - Interface do script com foco apenas na instalação
 - Documentação com instruções mais diretas
+- Experiência de gerenciamento integrada ao Portainer
 
 ## [1.1.1] - 2025-04-26
 
