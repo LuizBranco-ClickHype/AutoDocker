@@ -27,7 +27,7 @@ banner_principal() {
   echo -e "${AMARELO}=${NC}  ${BRANCO} ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═════╝  ╚═════╝  ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ${AMARELO}=${NC}"
   echo -e "${AMARELO}=${NC}                                                                                         ${AMARELO}=${NC}"
   echo -e "${AMARELO}=${NC}                                     ${AZUL}v.${VERSION}${NC}                                       ${AMARELO}=${NC}"
-  echo -e "${AMARELO}=${NC}                     ${VERDE}Docker Swarm + Traefik + Portainer + Monitoring${NC}                  ${AMARELO}=${NC}"
+  echo -e "${AMARELO}=${NC}                     ${VERDE}Docker Swarm + Traefik + Portainer${NC}                  ${AMARELO}=${NC}"
   echo -e "${AMARELO}=${NC}                                                                                         ${AMARELO}=${NC}"
   echo -e "${AMARELO}=================================================================================================${NC}"
   echo ""
@@ -79,23 +79,6 @@ banner_erro() {
   echo -e "${AMARELO}=${NC}         ${VERMELHO}  ██╔══╝  ██╔══██╗██╔══██╗██║   ██║      ╚████╔╝  ██║     ╚██╔╝   ${AMARELO}         =${NC}"
   echo -e "${AMARELO}=${NC}         ${VERMELHO}  ███████╗██║  ██║██║  ██║╚██████╔╝       ╚██╔╝   ███████╗██║     ${AMARELO}         =${NC}"
   echo -e "${AMARELO}=${NC}         ${VERMELHO}  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝         ╚═╝    ╚══════╝╚═╝     ${AMARELO}         =${NC}"
-  echo -e "${AMARELO}=${NC}                                                                                         ${AMARELO}=${NC}"
-  echo -e "${AMARELO}=================================================================================================${NC}"
-  echo ""
-  echo ""
-}
-
-# Banner para o modo avançado
-banner_avancado() {
-  echo ""
-  echo -e "${AMARELO}=================================================================================================${NC}"
-  echo -e "${AMARELO}=${NC}                                                                                         ${AMARELO}=${NC}"
-  echo -e "${AMARELO}=${NC}   ${CIANO}  ███╗   ███╗ ██████╗ ██████╗  ██████╗      █████╗ ██╗   ██╗ █████╗ ███╗   ██╗ ██████╗  █████╗ ██████╗  ██████╗  ${AMARELO}=${NC}"
-  echo -e "${AMARELO}=${NC}   ${CIANO}  ████╗ ████║██╔═══██╗██╔══██╗██╔═══██╗    ██╔══██╗██║   ██║██╔══██╗████╗  ██║██╔════╝ ██╔══██╗██╔══██╗██╔═══██╗ ${AMARELO}=${NC}"
-  echo -e "${AMARELO}=${NC}   ${CIANO}  ██╔████╔██║██║   ██║██║  ██║██║   ██║    ███████║██║   ██║███████║██╔██╗ ██║██║  ███╗███████║██║  ██║██║   ██║ ${AMARELO}=${NC}"
-  echo -e "${AMARELO}=${NC}   ${CIANO}  ██║╚██╔╝██║██║   ██║██║  ██║██║   ██║    ██╔══██║╚██╗ ██╔╝██╔══██║██║╚██╗██║██║   ██║██╔══██║██║  ██║██║   ██║ ${AMARELO}=${NC}"
-  echo -e "${AMARELO}=${NC}   ${CIANO}  ██║ ╚═╝ ██║╚██████╔╝██████╔╝╚██████╔╝    ██║  ██║ ╚████╔╝ ██║  ██║██║ ╚████║╚██████╔╝██║  ██║██████╔╝╚██████╔╝ ${AMARELO}=${NC}"
-  echo -e "${AMARELO}=${NC}   ${CIANO}  ╚═╝     ╚═╝ ╚═════╝ ╚═════╝  ╚═════╝     ╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝  ╚═════╝  ${AMARELO}=${NC}"
   echo -e "${AMARELO}=${NC}                                                                                         ${AMARELO}=${NC}"
   echo -e "${AMARELO}=================================================================================================${NC}"
   echo ""
@@ -161,23 +144,17 @@ mostrar_ajuda() {
   echo ""
   echo -e "${BRANCO}Descrição:${NC}"
   echo -e "  Este script configura automaticamente um ambiente Docker Swarm com"
-  echo -e "  Traefik como proxy reverso, Portainer para gerenciamento de contêineres,"
-  echo -e "  e componentes avançados para monitoramento, segurança e backup."
+  echo -e "  Traefik como proxy reverso e Portainer para gerenciamento de contêineres."
   echo ""
   echo -e "${BRANCO}Durante a execução, serão solicitadas as seguintes informações:${NC}"
   echo -e "  - ${AMARELO}Email para o Let's Encrypt${NC} (para certificados SSL)"
   echo -e "  - ${AMARELO}Domínio para acessar o Portainer${NC}"
-  echo -e "  - ${AMARELO}Domínio para o Grafana${NC} (monitoramento)"
-  echo -e "  - ${AMARELO}Domínio para o Prometheus${NC} (métricas)"
   echo ""
   echo -e "${BRANCO}Exemplo de uso:${NC}"
   echo -e "  ${VERDE}sudo ./auto_instalador.sh${NC}"
   echo ""
   exit 0
 }
-
-# Variáveis globais
-MODO_AVANCADO=true
 
 # Processamento de argumentos da linha de comando
 for arg in "$@"; do
@@ -190,11 +167,6 @@ done
 
 # Mostrar banner inicial
 banner_principal
-
-# Mostrar banner do modo avançado
-banner_avancado
-echo -e "${BRANCO}Modo avançado ativado!${NC} Serão instalados componentes adicionais para monitoramento, segurança e backup."
-echo ""
 
 # Verificar se está rodando como root
 if [ "$(id -u)" != "0" ]; then
@@ -301,30 +273,71 @@ if [ $? -ne 0 ]; then
 fi
 sucesso "Rede network_public criada com sucesso"
 
-# Criar volumes necessários
+# Adicionar função para verificar quando o Portainer estiver no ar antes da seção de volumes
 secao "CRIAÇÃO DOS VOLUMES"
 mensagem "Criando volumes necessários..."
+
+# Função para verificar quando o Portainer estiver no ar
+verificar_portainer_disponivel() {
+  mensagem "Verificando se o Portainer está disponível..."
+  
+  local MAX_TENTATIVAS=30
+  local INTERVALO=10
+  local tentativas=0
+  
+  echo ""
+  echo -e "${AMARELO}Aguardando o Portainer ficar disponível...${NC}"
+  echo -e "Isso pode levar algum tempo enquanto o contêiner inicializa e o certificado SSL é obtido."
+  echo -e "O script verificará a cada ${INTERVALO} segundos, por até $((MAX_TENTATIVAS * INTERVALO / 60)) minutos."
+  echo ""
+  
+  while [ $tentativas -lt $MAX_TENTATIVAS ]; do
+    # Verificar se o serviço do Portainer está rodando com réplicas esperadas
+    REPLICAS_ATIVAS=$(docker service ls --filter "name=portainer_portainer" --format "{{.Replicas}}" | grep -o "[0-9]*/[0-9]*" | cut -d/ -f1)
+    REPLICAS_ESPERADAS=$(docker service ls --filter "name=portainer_portainer" --format "{{.Replicas}}" | grep -o "[0-9]*/[0-9]*" | cut -d/ -f2)
+    
+    if [[ ! -z "$REPLICAS_ATIVAS" && ! -z "$REPLICAS_ESPERADAS" && "$REPLICAS_ATIVAS" -eq "$REPLICAS_ESPERADAS" ]]; then
+      # Se as réplicas estão ativas, verificar se o serviço está respondendo
+      # Não verificamos via HTTP porque pode estar usando SSL com certificado auto-assinado inicialmente
+      if docker service ps portainer_portainer | grep -q "Running"; then
+        echo ""
+        echo -e "${VERDE}[SUCESSO]${NC} Portainer está disponível!"
+        echo -e "Você pode acessá-lo em: ${AMARELO}https://${DOMINIO_PORTAINER}${NC}"
+        echo -e "Crie seu usuário administrador no primeiro acesso."
+        return 0
+      fi
+    fi
+    
+    # Exibir progresso
+    tentativas=$((tentativas + 1))
+    echo -ne "${AZUL}[VERIFICANDO]${NC} Tentativa $tentativas de $MAX_TENTATIVAS... "
+    
+    if [ $tentativas -lt $MAX_TENTATIVAS ]; then
+      echo -e "Aguardando ${INTERVALO} segundos."
+      sleep $INTERVALO
+    else
+      echo -e ""
+    fi
+  done
+  
+  echo ""
+  echo -e "${AMARELO}[AVISO]${NC} Tempo limite excedido para verificar se o Portainer está no ar."
+  echo -e "O processo de instalação continuará. Verifique manualmente acessando: ${AMARELO}https://${DOMINIO_PORTAINER}${NC}"
+  echo -e "Se o Portainer não estiver disponível, verifique os logs com: ${AMARELO}docker service logs portainer_portainer${NC}"
+  echo ""
+  return 1
+}
+
 docker volume create volume_swarm_shared
 docker volume create volume_swarm_certificates
 docker volume create portainer_data
-
-# Criar volumes para backup e monitoramento se modo avançado estiver ativado
-if [ "$MODO_AVANCADO" = true ]; then
-  mensagem "Criando volumes adicionais para monitoramento e backup..."
-  docker volume create prometheus_data
-  docker volume create grafana_data
-  docker volume create loki_data
-  docker volume create backup_data
-fi
 sucesso "Volumes criados com sucesso"
 
-# Configurar diretório de backup
-if [ "$MODO_AVANCADO" = true ]; then
-  mensagem "Configurando diretório de backup..."
-  mkdir -p /opt/docker-backups
-  chmod 700 /opt/docker-backups
-  sucesso "Diretório de backup configurado"
-fi
+# Configurar diretório de backup como padrão
+mensagem "Configurando diretório de backup..."
+mkdir -p /opt/docker-backups
+chmod 700 /opt/docker-backups
+sucesso "Diretório de backup configurado"
 
 # Solicitar email para o Traefik
 secao "CONFIGURAÇÃO DO TRAEFIK"
@@ -341,36 +354,7 @@ done
 # Criar arquivo de configuração do Traefik
 mensagem "Configurando o Traefik com email: $EMAIL_USUARIO"
 
-# Adicionar configurações de segurança avançadas no Traefik, se o modo avançado estiver ativado
-TRAEFIK_SECURITY_CONFIG=""
-TRAEFIK_MIDDLEWARES=""
-if [ "$MODO_AVANCADO" = true ]; then
-  mensagem "Adicionando configurações de segurança avançadas para o Traefik..."
-  TRAEFIK_SECURITY_CONFIG="
-      - \"--entryPoints.websecure.http.tls.options.default.minVersion=VersionTLS12\"
-      - \"--entryPoints.websecure.http.tls.options.default.cipherSuites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305\"
-      - \"--entryPoints.websecure.http.middlewares=secHeaders@docker\"
-      - \"--metrics.prometheus=true\"
-      - \"--metrics.prometheus.buckets=0.1,0.3,1.2,5.0\"
-      - \"--accesslog.filePath=/var/log/traefik/access.log\"
-      - \"--accesslog.bufferingSize=100\"
-      - \"--accesslog.filters.statusCodes=400-499,500-599\"
-      - \"--pilot.token=\""
-  
-  TRAEFIK_MIDDLEWARES="
-        - \"traefik.http.middlewares.secHeaders.headers.browserXssFilter=true\"
-        - \"traefik.http.middlewares.secHeaders.headers.contentTypeNosniff=true\"
-        - \"traefik.http.middlewares.secHeaders.headers.forceSTSHeader=true\"
-        - \"traefik.http.middlewares.secHeaders.headers.stsIncludeSubdomains=true\"
-        - \"traefik.http.middlewares.secHeaders.headers.stsPreload=true\"
-        - \"traefik.http.middlewares.secHeaders.headers.stsSeconds=31536000\"
-        - \"traefik.http.middlewares.secHeaders.headers.customFrameOptionsValue=SAMEORIGIN\"
-        - \"traefik.http.middlewares.secHeaders.headers.customRequestHeaders.X-Forwarded-Proto=https\"
-        - \"traefik.http.middlewares.secHeaders.headers.contentSecurityPolicy=upgrade-insecure-requests\"
-        - \"traefik.http.middlewares.limit.ratelimit.average=100\"
-        - \"traefik.http.middlewares.limit.ratelimit.burst=50\""
-fi
-
+# Configuração simplificada do Traefik
 cat > /tmp/docker-install/traefik.yaml << EOL
 version: "3.7"
 
@@ -397,7 +381,8 @@ services:
       - "--log.format=json"
       - "--log.filePath=/var/log/traefik/traefik.log"
       - "--accesslog=true"
-      - "--accesslog.filepath=/var/log/traefik/access-log"${TRAEFIK_SECURITY_CONFIG}
+      - "--accesslog.filepath=/var/log/traefik/access-log"
+      - "--entryPoints.websecure.http.tls.options.default.minVersion=VersionTLS12"
     deploy:
       placement:
         constraints:
@@ -409,10 +394,10 @@ services:
         - "traefik.http.routers.http-catchall.rule=hostregexp(\`{host:.+}\`)"
         - "traefik.http.routers.http-catchall.entrypoints=web"
         - "traefik.http.routers.http-catchall.middlewares=redirect-https@docker"
-        - "traefik.http.routers.http-catchall.priority=1"${TRAEFIK_MIDDLEWARES}
+        - "traefik.http.routers.http-catchall.priority=1"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "vol_certificates:/etc/traefik/letsencrypt"
+      - "volume_swarm_certificates:/etc/traefik/letsencrypt"
       - "/var/log/traefik:/var/log/traefik"
     ports:
       - target: 80
@@ -428,10 +413,10 @@ services:
 
 volumes:
 
-  vol_shared:
+  volume_swarm_shared:
     external: true
     name: volume_swarm_shared
-  vol_certificates:
+  volume_swarm_certificates:
     external: true
     name: volume_swarm_certificates
 
@@ -462,12 +447,6 @@ while [ -z "$DOMINIO_PORTAINER" ]; do
     aviso "O domínio não pode estar vazio. Por favor, tente novamente."
   fi
 done
-
-# Configurar autenticação de dois fatores para o Portainer no modo avançado
-PORTAINER_OPTIONS=""
-if [ "$MODO_AVANCADO" = true ]; then
-  PORTAINER_OPTIONS="--security-opt=no-new-privileges:true"
-fi
 
 # Criar arquivo de configuração do Portainer
 mensagem "Configurando o Portainer com domínio: $DOMINIO_PORTAINER"
@@ -534,278 +513,15 @@ if [ $? -ne 0 ]; then
 fi
 sucesso "Stack do Portainer implantada com sucesso"
 
-# Configurar monitoramento se o modo avançado estiver ativado
-if [ "$MODO_AVANCADO" = true ]; then
-  # Solicitar domínios para Grafana e Prometheus
-  mensagem "Configurando sistema de monitoramento..."
-  DOMINIO_GRAFANA=""
-  while [ -z "$DOMINIO_GRAFANA" ]; do
-    read -p "Digite seu domínio para o Grafana (exemplo: grafana.seudominio.com): " DOMINIO_GRAFANA
-    if [ -z "$DOMINIO_GRAFANA" ]; then
-      aviso "O domínio não pode estar vazio. Por favor, tente novamente."
-    fi
-  done
+# Verificar quando o Portainer estiver disponível
+verificar_portainer_disponivel
 
-  DOMINIO_PROMETHEUS=""
-  while [ -z "$DOMINIO_PROMETHEUS" ]; do
-    read -p "Digite seu domínio para o Prometheus (exemplo: prometheus.seudominio.com): " DOMINIO_PROMETHEUS
-    if [ -z "$DOMINIO_PROMETHEUS" ]; then
-      aviso "O domínio não pode estar vazio. Por favor, tente novamente."
-    fi
-  done
+# Configurar backup automático
+mensagem "Configurando sistema de backup automático..."
+mkdir -p /opt/backup-scripts
 
-  # Criar diretórios para monitoramento
-  mkdir -p /opt/portainer/stacks
-  mkdir -p /opt/monitoring/prometheus
-  mkdir -p /opt/monitoring/grafana/provisioning/datasources
-  mkdir -p /opt/monitoring/grafana/provisioning/dashboards
-  mkdir -p /opt/monitoring/loki
-
-  # Criar arquivo de configuração do Prometheus
-  cat > /opt/monitoring/prometheus/prometheus.yml << EOL
-global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
-
-scrape_configs:
-  - job_name: 'prometheus'
-    static_configs:
-      - targets: ['localhost:9090']
-
-  - job_name: 'docker'
-    docker_sd_configs:
-      - host: unix:///var/run/docker.sock
-    relabel_configs:
-      - source_labels: [__meta_docker_container_name]
-        regex: '/(.*)'
-        target_label: container_name
-      - source_labels: [__meta_docker_container_id]
-        target_label: container_id
-
-  - job_name: 'traefik'
-    static_configs:
-      - targets: ['traefik_traefik:8080']
-
-  - job_name: 'node'
-    static_configs:
-      - targets: ['node-exporter:9100']
-
-  - job_name: 'cadvisor'
-    static_configs:
-      - targets: ['cadvisor:8080']
-EOL
-
-  # Criar arquivo de configuração do datasource do Grafana
-  cat > /opt/monitoring/grafana/provisioning/datasources/datasource.yml << EOL
-apiVersion: 1
-
-datasources:
-  - name: Prometheus
-    type: prometheus
-    access: proxy
-    url: http://prometheus:9090
-    isDefault: true
-
-  - name: Loki
-    type: loki
-    access: proxy
-    url: http://loki:3100
-EOL
-
-  # Criar stack de monitoramento como um arquivo para o Portainer
-  cat > /opt/portainer/stacks/monitoring.yml << EOL
-version: "3.7"
-
-services:
-  prometheus:
-    image: prom/prometheus:latest
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--storage.tsdb.retention.time=15d'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-      - '--web.console.templates=/etc/prometheus/consoles'
-      - '--web.enable-lifecycle'
-    volumes:
-      - /opt/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus
-    networks:
-      - network_public
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 1024M
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.prometheus.rule=Host(\`${DOMINIO_PROMETHEUS}\`)"
-        - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
-        - "traefik.http.routers.prometheus.entrypoints=websecure"
-        - "traefik.http.routers.prometheus.tls.certresolver=letsencryptresolver"
-        - "traefik.http.routers.prometheus.middlewares=auth-prometheus@docker"
-        - "traefik.http.middlewares.auth-prometheus.basicauth.users=admin:$$apr1$$6pJX1UGm$$FucMeUaGv9qgZWLmH/J7m."
-
-  grafana:
-    image: grafana/grafana:latest
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - /opt/monitoring/grafana/provisioning:/etc/grafana/provisioning
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_SERVER_ROOT_URL=https://${DOMINIO_GRAFANA}
-      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
-    networks:
-      - network_public
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 512M
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.grafana.rule=Host(\`${DOMINIO_GRAFANA}\`)"
-        - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-        - "traefik.http.routers.grafana.entrypoints=websecure"
-        - "traefik.http.routers.grafana.tls.certresolver=letsencryptresolver"
-
-  node-exporter:
-    image: prom/node-exporter:latest
-    command:
-      - '--path.procfs=/host/proc'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    networks:
-      - network_public
-    deploy:
-      mode: global
-
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    networks:
-      - network_public
-    deploy:
-      mode: global
-
-  loki:
-    image: grafana/loki:latest
-    command: -config.file=/etc/loki/local-config.yaml
-    volumes:
-      - loki_data:/loki
-    networks:
-      - network_public
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 1G
-
-  promtail:
-    image: grafana/promtail:latest
-    volumes:
-      - /var/log:/var/log:ro
-    command: -config.file=/etc/promtail/config.yml
-    networks:
-      - network_public
-    deploy:
-      mode: global
-
-networks:
-  network_public:
-    external: true
-    name: network_public
-
-volumes:
-  prometheus_data:
-    external: true
-    name: prometheus_data
-  grafana_data:
-    external: true
-    name: grafana_data
-  loki_data:
-    external: true
-    name: loki_data
-EOL
-
-  # Configurar o Promtail para coletar logs
-  mkdir -p /opt/monitoring/promtail
-  cat > /opt/monitoring/promtail/config.yml << EOL
-server:
-  http_listen_port: 9080
-  grpc_listen_port: 0
-
-positions:
-  filename: /tmp/positions.yaml
-
-clients:
-  - url: http://loki:3100/loki/api/v1/push
-
-scrape_configs:
-  - job_name: system
-    static_configs:
-    - targets:
-        - localhost
-      labels:
-        job: varlogs
-        __path__: /var/log/*log
-
-  - job_name: containers
-    static_configs:
-    - targets:
-        - localhost
-      labels:
-        job: containerlogs
-        __path__: /var/lib/docker/containers/*/*log
-EOL
-
-  # Não implantar stack de monitoramento automaticamente, deixar para o usuário fazer via Portainer
-  mensagem "Stack de monitoramento preparada para implantação através do Portainer."
-  sucesso "Arquivos de configuração salvos em /opt/portainer/stacks/monitoring.yml"
-  
-  # Configuração para importar a stack via Portainer
-  mensagem "Para implantar a stack de monitoramento, siga estes passos no Portainer:"
-  echo -e "1. Acesse o Portainer em https://${DOMINIO_PORTAINER}"
-  echo -e "2. Vá para 'Stacks' no menu lateral"
-  echo -e "3. Clique em 'Add stack'"
-  echo -e "4. Escolha 'Upload' ou 'Repository' e selecione o arquivo da stack"
-  echo -e "5. Clique em 'Deploy the stack'"
-  echo -e ""
-  echo -e "O Grafana estará disponível em https://${DOMINIO_GRAFANA}"
-  echo -e "O Prometheus estará disponível em https://${DOMINIO_PROMETHEUS}"
-  echo -e ""
-  echo -e "Usuário Grafana: admin"
-  echo -e "Senha Grafana: admin (altere no primeiro acesso)"
-  echo -e ""
-  echo -e "Usuário Prometheus: admin"
-  echo -e "Senha Prometheus: admin"
-  
-  # Configurar backup automático
-  mensagem "Configurando sistema de backup automático..."
-  mkdir -p /opt/backup-scripts
-  
-  # Script para backup dos volumes
-  cat > /opt/backup-scripts/backup-volumes.sh << 'EOL'
+# Script para backup dos volumes
+cat > /opt/backup-scripts/backup-volumes.sh << 'EOL'
 #!/bin/bash
 DATE=$(date +%Y%m%d_%H%M%S)
 BACKUP_DIR=/opt/docker-backups/volumes
@@ -814,7 +530,7 @@ BACKUP_DIR=/opt/docker-backups/volumes
 mkdir -p $BACKUP_DIR
 
 # Lista de volumes a serem backupeados
-VOLUMES=("volume_swarm_certificates" "portainer_data" "prometheus_data" "grafana_data" "loki_data")
+VOLUMES=("volume_swarm_certificates" "portainer_data")
 
 for VOLUME in "${VOLUMES[@]}"; do
   echo "Realizando backup do volume: $VOLUME"
@@ -837,16 +553,16 @@ done
 echo "Processo de backup finalizado em $(date)"
 EOL
 
-  # Tornar script executável
-  chmod +x /opt/backup-scripts/backup-volumes.sh
-  
-  # Configurar crontab para executar o backup diariamente às 2h da manhã
-  (crontab -l 2>/dev/null; echo "0 2 * * * /opt/backup-scripts/backup-volumes.sh > /var/log/backup-volumes.log 2>&1") | crontab -
+# Tornar script executável
+chmod +x /opt/backup-scripts/backup-volumes.sh
 
-  sucesso "Sistema de backup configurado para execução diária às 2h da manhã"
-  
-  # Criar um script para verificação de integridade do sistema
-  cat > /opt/backup-scripts/healthcheck.sh << 'EOL'
+# Configurar crontab para executar o backup diariamente às 2h da manhã
+(crontab -l 2>/dev/null; echo "0 2 * * * /opt/backup-scripts/backup-volumes.sh > /var/log/backup-volumes.log 2>&1") | crontab -
+
+sucesso "Sistema de backup configurado para execução diária às 2h da manhã"
+
+# Criar um script para verificação de integridade do sistema
+cat > /opt/backup-scripts/healthcheck.sh << 'EOL'
 #!/bin/bash
 DATE=$(date +%Y%m%d_%H%M%S)
 LOG_FILE="/var/log/healthcheck-$DATE.log"
@@ -883,14 +599,13 @@ ls -t /var/log/healthcheck-*.log | tail -n +31 | xargs rm -f
 echo "Verificação de integridade finalizada em $(date)" >> $LOG_FILE
 EOL
 
-  # Tornar script executável
-  chmod +x /opt/backup-scripts/healthcheck.sh
-  
-  # Configurar crontab para executar a verificação a cada 6 horas
-  (crontab -l 2>/dev/null; echo "0 */6 * * * /opt/backup-scripts/healthcheck.sh") | crontab -
+# Tornar script executável
+chmod +x /opt/backup-scripts/healthcheck.sh
 
-  sucesso "Sistema de verificação de integridade configurado para execução a cada 6 horas"
-fi
+# Configurar crontab para executar a verificação a cada 6 horas
+(crontab -l 2>/dev/null; echo "0 */6 * * * /opt/backup-scripts/healthcheck.sh") | crontab -
+
+sucesso "Sistema de verificação de integridade configurado para execução a cada 6 horas"
 
 # Limpar arquivos temporários
 mensagem "Limpando arquivos temporários..."
@@ -905,32 +620,18 @@ echo -e "${AMARELO}Portainer:${NC} https://${DOMINIO_PORTAINER}"
 echo -e "${AMARELO}Usuário:${NC} admin (crie sua senha no primeiro acesso)"
 echo ""
 
-if [ "$MODO_AVANCADO" = true ]; then
-  echo -e "${VERDE}=== MONITORAMENTO (INSTALAR VIA PORTAINER) ===${NC}"
-  echo -e "Arquivo da stack: /opt/portainer/stacks/monitoring.yml"
-  echo -e ""
-  echo -e "Para instalar o monitoramento:"
-  echo -e "1. Acesse o Portainer em https://${DOMINIO_PORTAINER}"
-  echo -e "2. Vá para 'Stacks' e clique em 'Add stack'"
-  echo -e "3. Escolha 'Upload' ou 'Repository' e selecione o arquivo da stack"
-  echo -e "4. Clique em 'Deploy the stack'"
-  echo -e ""
-  echo -e "${AMARELO}Após a instalação:${NC}"
-  echo -e "${AMARELO}Grafana:${NC} https://${DOMINIO_GRAFANA}"
-  echo -e "${AMARELO}Prometheus:${NC} https://${DOMINIO_PROMETHEUS}"
-  echo -e ""
-  echo -e "${VERDE}=== BACKUP ===${NC}"
-  echo -e "${AMARELO}Diretório de backups:${NC} /opt/docker-backups"
-  echo -e "${AMARELO}Frequência:${NC} Diariamente às 2h da manhã"
-  echo -e ""
-  echo -e "${VERDE}=== VERIFICAÇÃO DE INTEGRIDADE ===${NC}"
-  echo -e "${AMARELO}Logs:${NC} /var/log/healthcheck-*.log"
-  echo -e "${AMARELO}Frequência:${NC} A cada 6 horas"
-  echo -e ""
-fi
+# Remover condicionais para exibir informações de monitoramento e backup
+echo -e "${VERDE}=== BACKUP ===${NC}"
+echo -e "${AMARELO}Diretório de backups:${NC} /opt/docker-backups"
+echo -e "${AMARELO}Frequência:${NC} Diariamente às 2h da manhã"
+echo -e ""
+echo -e "${VERDE}=== VERIFICAÇÃO DE INTEGRIDADE ===${NC}"
+echo -e "${AMARELO}Logs:${NC} /var/log/healthcheck-*.log"
+echo -e "${AMARELO}Frequência:${NC} A cada 6 horas"
+echo -e ""
 
 echo -e "${VERDE}=== PRÓXIMOS PASSOS ===${NC}"
 echo -e "1. Acesse o Portainer e defina sua senha de administrador"
-echo -e "2. Na seção 'Stacks' do Portainer, implante a stack de monitoramento conforme instruções acima"
+echo -e "2. Comece a gerenciar seus contêineres através do Portainer"
 echo -e ""
 echo -e "${AMARELO}Obrigado por usar nosso instalador! Para suporte adicional, visite nosso repositório GitHub.${NC}" 
