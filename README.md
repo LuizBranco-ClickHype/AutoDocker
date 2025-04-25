@@ -2,7 +2,7 @@
 
 ![AutoDocker Banner](https://via.placeholder.com/800x200/0d47a1/ffffff?text=AutoDocker)
 
-Este é um script de autoinstalação que configura automaticamente um ambiente Docker Swarm com Traefik como proxy reverso, Portainer para gerenciamento de contêineres e sistema de monitoramento avançado.
+Este é um script de autoinstalação que configura automaticamente um ambiente Docker Swarm com Traefik como proxy reverso e Portainer para gerenciamento de contêineres.
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/LuizBranco-ClickHype/AutoDocker)](https://github.com/LuizBranco-ClickHype/AutoDocker/releases)
 [![GitHub license](https://img.shields.io/github/license/LuizBranco-ClickHype/AutoDocker)](https://github.com/LuizBranco-ClickHype/AutoDocker/blob/main/LICENSE)
@@ -11,15 +11,12 @@ Este é um script de autoinstalação que configura automaticamente um ambiente 
 
 - **Instalação automatizada** de Docker Swarm, Traefik e Portainer
 - **Interface visual** com banners ASCII Art para melhor experiência
-- **Monitoramento avançado** com Prometheus e Grafana via Portainer
 - **Sistema de backup automático** para volumes críticos
-- **Segurança aprimorada** com cabeçalhos HTTP de segurança e TLS 1.2+
+- **Segurança aprimorada** com TLS 1.2+
 - **Verificação de integridade** automática do sistema
-- **Sistema de logs centralizado** para melhor diagnóstico
-- **Rate limiting** para proteção contra ataques
 - **Configuração automática de firewall** para abrir portas necessárias
 - **Instalação robusta** que continua mesmo com problemas de firewall
-- **Integração com Portainer** para gerenciamento das stacks de monitoramento
+- **Monitoramento de disponibilidade** do Portainer após instalação
 
 ## 📋 Pré-requisitos
 
