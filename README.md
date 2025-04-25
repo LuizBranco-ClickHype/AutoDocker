@@ -25,7 +25,7 @@ Este é um script de autoinstalação que configura automaticamente um ambiente 
 - Um servidor Linux (testado em Ubuntu e Debian)
 - Acesso root ao servidor
 - Um domínio apontando para o IP do servidor
-- Portas 80 e 443 liberadas no firewall (configuração automática no sistema, mas verifique seu provedor VPS)
+- Portas 80 e 443 liberadas no firewall (configuração automática no sistema)
 
 ## 💻 Como usar
 
@@ -56,8 +56,7 @@ Se você não conseguir acessar as aplicações após a instalação:
 
 1. Verifique se o serviço está rodando: `docker service ls`
 2. Verifique se o domínio está apontando para o IP correto do servidor
-3. **Verifique o firewall do seu provedor VPS** - muitos provedores como AWS, DigitalOcean, Linode, etc. têm firewalls adicionais que precisam ser configurados manualmente no painel de controle
-4. Execute o diagnóstico: `sudo ./auto_instalador.sh --diagnostico`
+3. Execute o diagnóstico: `sudo ./auto_instalador.sh --diagnostico`
 
 ## 🔄 Controle de versão
 

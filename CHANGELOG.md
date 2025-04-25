@@ -5,6 +5,16 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [1.1.2] - 2025-04-26
+
+### Removido
+- Referências à configuração de firewall em provedores VPS
+- Mensagens específicas sobre AWS, DigitalOcean, Linode e outros provedores
+
+### Simplificado
+- Interface de diagnóstico de conectividade
+- Mensagens de ajuda para solução de problemas
+
 ## [1.1.1] - 2025-04-26
 
 ### Adicionado
