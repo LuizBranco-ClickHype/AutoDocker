@@ -158,8 +158,6 @@ mostrar_ajuda() {
   echo ""
   echo -e "${BRANCO}Opções:${NC}"
   echo -e "  ${VERDE}-h, --help${NC}              Mostra esta ajuda"
-  echo -e "  ${VERDE}-d, --diagnostico${NC}       Executa diagnóstico de conectividade para resolver problemas"
-  echo -e "  ${VERDE}--no-firewall${NC}           Desativa todos os firewalls (use apenas para diagnóstico)"
   echo ""
   echo -e "${BRANCO}Descrição:${NC}"
   echo -e "  Este script configura automaticamente um ambiente Docker Swarm com"
@@ -186,14 +184,6 @@ for arg in "$@"; do
   case $arg in
     -h|--help)
       mostrar_ajuda
-      ;;
-    -d|--diagnostico)
-      verificar_conectividade
-      exit 0
-      ;;
-    --no-firewall)
-      desativar_firewalls
-      exit 0
       ;;
   esac
 done
@@ -928,113 +918,4 @@ echo -e "1. Acesse o Portainer e defina sua senha de administrador"
 echo -e "2. Configure seu firewall para permitir apenas as portas necessárias (80, 443)"
 echo -e "3. Considere adicionar mais nós ao seu swarm para alta disponibilidade"
 echo ""
-echo -e "${AMARELO}Obrigado por usar nosso instalador! Para suporte adicional, visite nosso repositório GitHub.${NC}"
-
-echo -e "${VERDE}=== VERIFICAÇÃO DE CONECTIVIDADE ===${NC}"
-echo -e "Se você não conseguir acessar os serviços, execute o diagnóstico:"
-echo -e "   ${AMARELO}sudo $(basename $0) --diagnostico${NC}"
-echo -e ""
-echo -e "Para desativar temporariamente todos os firewalls para testes (${VERMELHO}CUIDADO: diminui segurança${NC}):"
-echo -e "   ${AMARELO}sudo $(basename $0) --no-firewall${NC}"
-echo -e ""
-
-# Função para verificar conectividade e diagnosticar problemas
-verificar_conectividade() {
-  secao "DIAGNÓSTICO DE CONECTIVIDADE"
-  echo -e "${AMARELO}Iniciando verificação de conectividade...${NC}"
-  
-  # Verificar estado dos serviços Docker
-  echo -e "\n${AZUL}[VERIFICAÇÃO]${NC} Estado dos serviços Docker:"
-  docker service ls
-  
-  # Verificar portas abertas
-  echo -e "\n${AZUL}[VERIFICAÇÃO]${NC} Portas abertas no sistema:"
-  if command -v netstat &> /dev/null; then
-    netstat -tulpn | grep -E '80|443'
-  elif command -v ss &> /dev/null; then
-    ss -tulpn | grep -E '80|443'
-  else
-    echo "Não foi possível verificar portas abertas (netstat/ss não encontrado)"
-  fi
-  
-  # Verificar status do firewall
-  echo -e "\n${AZUL}[VERIFICAÇÃO]${NC} Status do firewall:"
-  if command -v ufw &> /dev/null; then
-    ufw status
-    echo -e "\n${VERDE}Para desabilitar completamente o firewall UFW (use apenas para testes):${NC}"
-    echo "sudo ufw disable"
-  elif command -v firewall-cmd &> /dev/null; then
-    firewall-cmd --state
-    echo -e "\n${VERDE}Para desabilitar completamente o FirewallD (use apenas para testes):${NC}"
-    echo "sudo systemctl stop firewalld"
-    echo "sudo systemctl disable firewalld"
-  elif command -v iptables &> /dev/null; then
-    iptables -L
-    echo -e "\n${VERDE}Para limpar regras de iptables (use apenas para testes):${NC}"
-    echo "sudo iptables -F"
-  fi
-  
-  # Verificar logs do Traefik
-  echo -e "\n${AZUL}[VERIFICAÇÃO]${NC} Últimas linhas do log do Traefik:"
-  docker service logs --tail 10 traefik_traefik 2>/dev/null || echo "Serviço Traefik não encontrado"
-  
-  # Verificar resolução DNS
-  echo -e "\n${AZUL}[VERIFICAÇÃO]${NC} Resolução DNS (se domínio estiver definido):"
-  if [ ! -z "$DOMINIO_PORTAINER" ]; then
-    echo "Verificando $DOMINIO_PORTAINER:"
-    host $DOMINIO_PORTAINER 2>/dev/null || nslookup $DOMINIO_PORTAINER 2>/dev/null || echo "Ferramentas de DNS não encontradas"
-  else
-    echo "Nenhum domínio definido para verificar"
-  fi
-  
-  # Informações gerais do sistema
-  echo -e "\n${AZUL}[VERIFICAÇÃO]${NC} Informações do sistema:"
-  echo "IP do servidor: $IP_SERVIDOR"
-  
-  echo -e "\n${AMARELO}===== INSTRUÇÕES PARA RESOLVER PROBLEMAS DE CONECTIVIDADE =====${NC}"
-  echo -e "1. ${BRANCO}Se os serviços não estão rodando:${NC} Verifique os logs com 'docker service logs NOME_SERVICO'"
-  echo -e "2. ${BRANCO}Se o firewall está bloqueando:${NC} Desabilite temporariamente o firewall usando os comandos acima"
-  echo -e "3. ${BRANCO}Se o DNS não está resolvendo:${NC} Verifique se o domínio está apontando para o IP $IP_SERVIDOR"
-  echo -e ""
-  echo -e "${VERMELHO}ATENÇÃO:${NC} Desabilitar o firewall deve ser feito apenas para testes e diagnósticos. Reative-o após resolver o problema."
-}
-
-# Função para desativar todos os firewalls
-desativar_firewalls() {
-  secao "DESATIVAÇÃO DE FIREWALLS"
-  mensagem "ATENÇÃO: Desativando todos os firewalls. Isso deve ser usado apenas para diagnóstico!"
-
-  # Desativar UFW
-  if command -v ufw &> /dev/null; then
-    mensagem "Desativando UFW..."
-    ufw disable
-    sucesso "UFW desativado"
-  fi
-
-  # Desativar FirewallD
-  if command -v firewall-cmd &> /dev/null; then
-    mensagem "Desativando FirewallD..."
-    systemctl stop firewalld
-    systemctl disable firewalld
-    sucesso "FirewallD desativado"
-  fi
-
-  # Limpar regras iptables
-  if command -v iptables &> /dev/null; then
-    mensagem "Limpando regras iptables..."
-    iptables -F
-    iptables -X
-    iptables -t nat -F
-    iptables -t nat -X
-    iptables -t mangle -F
-    iptables -t mangle -X
-    iptables -P INPUT ACCEPT
-    iptables -P FORWARD ACCEPT
-    iptables -P OUTPUT ACCEPT
-    sucesso "Regras iptables limpas"
-  fi
-
-  echo -e "${VERMELHO}AVISO DE SEGURANÇA: Todos os firewalls foram desativados. Seu servidor está vulnerável!${NC}"
-  echo -e "Isso deve ser usado apenas para diagnóstico. Reative o firewall quando terminar os testes."
-  echo -e "Execute '${AMARELO}./$(basename $0)${NC}' novamente para reinstalar com proteções de firewall."
-} 
+echo -e "${AMARELO}Obrigado por usar nosso instalador! Para suporte adicional, visite nosso repositório GitHub.${NC}" 

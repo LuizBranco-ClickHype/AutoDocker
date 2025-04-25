@@ -9,11 +9,13 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ### Removido
 - Referências à configuração de firewall em provedores VPS
-- Mensagens específicas sobre AWS, DigitalOcean, Linode e outros provedores
+- Funcionalidades de diagnóstico de conectividade (--diagnostico)
+- Opção para desativar firewalls (--no-firewall)
+- Mensagens específicas sobre solução de problemas
 
 ### Simplificado
-- Interface de diagnóstico de conectividade
-- Mensagens de ajuda para solução de problemas
+- Interface do script com foco apenas na instalação
+- Documentação com instruções mais diretas
 
 ## [1.1.1] - 2025-04-26
 
