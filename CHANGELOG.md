@@ -5,6 +5,17 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-04-25
+
+### Alterado
+- Removido o modo básico de instalação, agora apenas o modo avançado está disponível
+- Simplificação da interface de linha de comando
+- Atualizada a documentação para refletir as mudanças
+
+### Melhorado
+- Experiência de instalação mais consistente e completa
+- Segurança e monitoramento habilitados por padrão para todos os usuários
+
 ## [1.0.0] - 2023-07-22
 
 ### Adicionado
