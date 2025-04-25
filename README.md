@@ -44,7 +44,8 @@ Este projeto usa versionamento semântico para garantir que você sempre possa r
 
 ### Versões disponíveis:
 
-- [v1.1.2](./versoes/v1.1.2/) - Versão atual com integração Portainer e instalação robusta
+- [v1.2.0](./versoes/v1.2.0/) - Versão atual simplificada com instalação unificada
+- [v1.1.2](./versoes/v1.1.2/) - Versão com integração Portainer e instalação robusta
 - [v1.1.1](./versoes/v1.1.1/) - Versão com diagnóstico de conectividade
 - [v1.1.0](./versoes/v1.1.0/) - Versão com apenas modo avançado
 - [v1.0.0](./versoes/v1.0.0/) - Versão com interface visual e opção de modo avançado
